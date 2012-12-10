@@ -3,6 +3,7 @@
  */
 package net.obviam.droidz;
 
+import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -37,14 +38,28 @@ public class MainThread extends Thread {
 
 	@Override
 	public void run() {
-		long tickCount = 0L;
+		Canvas canvas;
 		Log.d(TAG, "Starting game loop");
 		while (running) {
-			tickCount++;
-			// update game state 
-			// render state to the screen
+			canvas = null;
+			// try locking the canvas for exclusive pixel editing
+			// in the surface
+			try {
+				canvas = this.surfaceHolder.lockCanvas();
+				synchronized (surfaceHolder) {
+					// update game state 
+					// render state to the screen
+					// draws the canvas on the panel
+					this.gamePanel.onDraw(canvas);				
+				}
+			} finally {
+				// in case of an exception the surface is not left in 
+				// an inconsistent state
+				if (canvas != null) {
+					surfaceHolder.unlockCanvasAndPost(canvas);
+				}
+			}	// end finally
 		}
-		Log.d(TAG, "Game loop executed " + tickCount + " times");
 	}
 	
 }
