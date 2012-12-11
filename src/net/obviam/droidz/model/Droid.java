@@ -3,11 +3,16 @@
  */
 package net.obviam.droidz.model;
 
+import net.obviam.droidz.model.components.Speed;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
 /**
+ * This is a test droid that is dragged, dropped, moved, smashed against
+ * the wall and done other terrible things with.
+ * Wait till it gets a weapon!
+ * 
  * @author impaler
  *
  */
@@ -17,11 +22,13 @@ public class Droid {
 	private int x;			// the X coordinate
 	private int y;			// the Y coordinate
 	private boolean touched;	// if droid is touched/picked up
+	private Speed speed;	// the speed with its directions
 	
 	public Droid(Bitmap bitmap, int x, int y) {
 		this.bitmap = bitmap;
 		this.x = x;
 		this.y = y;
+		this.speed = new Speed();
 	}
 	
 	public Bitmap getBitmap() {
@@ -51,10 +58,29 @@ public class Droid {
 		this.touched = touched;
 	}
 	
+	public Speed getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(Speed speed) {
+		this.speed = speed;
+	}
+
 	public void draw(Canvas canvas) {
 		canvas.drawBitmap(bitmap, x - (bitmap.getWidth() / 2), y - (bitmap.getHeight() / 2), null);
 	}
 
+	/**
+	 * Method which updates the droid's internal state every tick
+	 */
+	public void update() {
+		if (!touched) {
+			x += (speed.getXv() * speed.getxDirection()); 
+			y += (speed.getYv() * speed.getyDirection());
+		}
+	}
+	
+	
 	/**
 	 * Handles the {@link MotionEvent.ACTION_DOWN} event. If the event happens on the 
 	 * bitmap surface then the touched state is set to <code>true</code> otherwise to <code>false</code>
