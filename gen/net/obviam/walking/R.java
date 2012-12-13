@@ -5,14 +5,14 @@
  * should not be modified by hand.
  */
 
-package net.obviam.droidz;
+package net.obviam.walking;
 
 public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int droid_1=0x7f020000;
-        public static final int icon=0x7f020001;
+        public static final int icon=0x7f020000;
+        public static final int walk_elaine=0x7f020001;
     }
     public static final class layout {
         public static final int main=0x7f030000;
